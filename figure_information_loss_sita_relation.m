@@ -26,14 +26,12 @@ for cs=1:numb_info
 end
 
 sita_vec=[0:0.05:0.95];
-Entropy_r=(1/2)*log(2*pi*tau2);
+Entropy_r=(1/2)*log(2*pi*max(tau2,0));
 for csita=1:length(sita_vec)
     sita=sita_vec(csita);    
     M=diag(m);
-    dmy_tau=(g*M*sig_rs'*(g*M*sig_rs')') / (g*M*pinv(sig_ss)*M'*g' + ((sita/(1-sita))^2)*sigma2);    
-    Entropy_s=(1/2)*log(2*pi*(tau02-dmy_tau));
-    infoloss_vec(csita)=Entropy_s-Entropy_r;
+    dmy_tau=(g*M*sig_rs'*(g*M*sig_rs')') / (g*M*pinv(sig_ss)*M'*g' + ((sita/(1-sita))^2)*sigma2);         
+    infoloss_ratio_vec(csita)=(1/2)*log(2*pi*max((tau02-dmy_tau)/tau2,1)) / abs(Entropy_r);
 end
-
 figure
-plot(sita_vec,infoloss_vec)
+plot(sita_vec,infoloss_ratio_vec)
